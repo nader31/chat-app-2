@@ -1,1 +1,26 @@
-<p>login works!</p>
+<form (submit)="onLogin(loginForm)" #loginForm="ngForm">
+  <div>
+    <input
+      type="email"
+      name="email"
+      ngModel
+      required
+      email
+      placeholder="E-mail"
+      #emailInput="ngModel"
+      >
+      <p *ngIf="emailInput.invalid">Please enter a valid email.</p>
+  </div>
+
+  <div>
+    <input
+      type="password"
+      name="password"
+      ngModel
+      required
+      placeholder="Password"
+      #passwordInput="ngModel">
+      <p *ngIf="passwordInput.invalid">Please enter a valid password.</p>
+  </div>
+  <button type="submit">Login</button>
+</form>

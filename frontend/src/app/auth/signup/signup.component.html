@@ -1,1 +1,37 @@
-<p>signup works!</p>
+  <form (submit)="onSignup(signupForm)" #signupForm="ngForm">
+    <div>
+      <input
+        type="text"
+        name="name"
+        ngModel
+        required
+        placeholder="Name"
+        #nameInput="ngModel"
+        >
+        <p *ngIf="nameInput.invalid">Please enter a valid name.</p>
+    </div>
+    <div>
+      <input
+        type="email"
+        name="email"
+        ngModel
+        required
+        email
+        placeholder="E-mail"
+        #emailInput="ngModel"
+        >
+        <p *ngIf="emailInput.invalid">Please enter a valid email.</p>
+    </div>
+
+    <div>
+      <input
+        type="password"
+        name="password"
+        ngModel
+        required
+        placeholder="Password"
+        #passwordInput="ngModel">
+        <p *ngIf="passwordInput.invalid">Please enter a valid password.</p>
+    </div>
+    <button type="submit">Signup</button>
+  </form>
