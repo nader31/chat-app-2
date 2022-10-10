@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const userRoutes = require("./routes/user");
 
 const app = express();
 
-mongoose.connect("mongodb+srv://nader:xK8P3A2xHAbw7r9u@cluster0.9xjpjya.mongodb.net/chat-app")
+mongoose.connect("mongodb+srv://nader:xK8P3A2xHAbw7r9u@cluster0.8y255sp.mongodb.net/chat-app")
     .then(() => {
         console.log('Connected to database');
     })
