@@ -1,4 +1,6 @@
 const express = require("express");
+const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
 
 const User = require('../models/user');
 
@@ -10,10 +12,12 @@ router.post("/signup", (req, res, next) => {
         const user = new User({
             name: req.body.name,
             email: req.body.email,
+            role: 'member',
             password: hash
         });
         user.save()
             .then(result => {
+                console.log(result);
                 res.status(201).json({
                     message: 'User created!',
                     result: result
@@ -46,7 +50,7 @@ router.post("/login", (req, res, next) => {
                 });
             }
             const token = jwt.sign(
-                {email: fetchedUser.email, userId: fetchedUser._id},
+                {email: fetchedUser.email, role: fetchedUser.role, userId: fetchedUser._id},
                 'secret_nader',
                 {expiresIn: "1h"}
             );
