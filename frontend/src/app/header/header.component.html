@@ -5,7 +5,7 @@
   <span class="spacer"></span>
   <ul>
     <li *ngIf="userIsAuthenticated">
-      <a routerLink="/" routerLinkActive=""></a>
+      <a routerLink="/" routerLinkActive="">{{userId}}</a>
     </li>
     <li *ngIf="!userIsAuthenticated">
       <a routerLink="/login" routerLinkActive="">Login</a>
