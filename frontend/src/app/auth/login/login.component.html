@@ -1,15 +1,14 @@
 <form (submit)="onLogin(loginForm)" #loginForm="ngForm">
   <div>
     <input
-      type="email"
-      name="email"
+      type="name"
+      name="username"
       ngModel
       required
-      email
-      placeholder="E-mail"
-      #emailInput="ngModel"
+      placeholder="Username"
+      #usernameInput="ngModel"
       >
-      <p *ngIf="emailInput.invalid">Please enter a valid email.</p>
+      <p *ngIf="usernameInput.invalid">Please enter a valid username.</p>
   </div>
 
   <div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
+import { AuthService } from '../auth/auth.service';
 import { SocketService } from '../socket.service';
 
 @Component({
@@ -8,81 +9,62 @@ import { SocketService } from '../socket.service';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-  messages: {username: string, text: string, time:string} | any = [
-    // {
-    //   username: "nader",
-    //   text: "blabla nouveau message",
-    //   time: "12H30"
-    // },
-    // {
-    //   username: "bob",
-    //   text: "olala encore un message",
-    //   time: "12H30"
-    // },
-    // {
-    //   username: "poppy",
-    //   text: "eh oui c'est moi!",
-    //   time: "12H30"
-    // },
-    // {
-    //   username: "nader",
-    //   text: "blabla nouveau message",
-    //   time: "12H30"
-    // },
-    // {
-    //   username: "bob",
-    //   text: "olala encore un message",
-    //   time: "12H30"
-    // },
-    // {
-    //   username: "poppy",
-    //   text: "eh oui c'est moi!",
-    //   time: "12H30"
-    // },
-  ];
+  messages: {username: string, text: string, date:string} | any = [];
   messagecontent = '';
   room = 'room1';
   msg = new FormControl('');
+  username!: string | null;
+  userId!: any;
+  rooms:string[] = ['room1','room2','room3'];
 
-  constructor(private socketService:SocketService) { }
+  constructor(private socketService:SocketService, private authService:AuthService) { }
 
   ngOnInit(): void {
-    // this.socketService.getMessages()
-    //   .subscribe((message) => {
-    //     this.messages.push(message);
-    //     console.log(message);
-    //   });
     this.socketService.initSocket();
-    this.socketService.listen('message')
+    this.socketService.listen('infoMessage')
       .subscribe((data: any) => {
+        if(data.room === this.room) {
+          this.messages.push({username: 'bot', text: data.text, date: '', room: data.room});
+        }
         console.log(data);
-        this.messages.push({username: 'nader', text: data, time: '12H40'});
       })
-    this.socketService.emit('joinRoom', this.room);
+    this.socketService.listen('output-messages')
+      .subscribe((messages: any) => {
+        console.log(messages);
+        messages.forEach( (message: any) => {
+          if(message.room === this.room) {
+            this.messages.push({username: message.creator, text: message.text, date: message.date, room: message.room});
+          }
+        });
+      })
+    this.userId = this.authService.getUserId();
+    this.username = this.authService.getUsername();
+    this.socketService.emit('joinRoom', {username: this.username, room: this.room});
+    this.socketService.listen('message')
+    .subscribe((data: any) => {
+      console.log(data);
+      this.messages.push({username: data.creator, text: data.text, date: data.date, room: data.room});
+    })
+    console.log('userId: ' + this.userId);
   }
 
   changeRoom(room:string) {
     if(this.room !== room) {
       this.room = room;
       console.log(room);
-      this.socketService.emit('joinRoom', room);
+      this.socketService.emit('joinRoom', {username: this.username, room: room});
       this.messages = [];
     }
   }
 
-  leaveRoom() {
-
-  }
-
   sendMessage() {
     if (this.msg.value) {
-      this.socketService.emit('message',{message: this.msg.value, room: this.room});
+      this.socketService.emit('message',{username: this.authService.getUsername(), userId: this.authService.getUserId(), text: this.msg.value, room: this.room});
+      console.log(this.authService.getUsername());
       console.log(this.msg.value);
       console.log(this.room);
       this.msg.reset();
     }
-    //console.log(form.value.message);
-    //this.messages.push({username: 'nader', text: form.value.message, time: '12H40'});
   }
 
 }

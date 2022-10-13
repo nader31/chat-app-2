@@ -10,7 +10,7 @@ router.post("/signup", (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
-            name: req.body.name,
+            username: req.body.username,
             email: req.body.email,
             role: 'member',
             password: hash
@@ -33,7 +33,7 @@ router.post("/signup", (req, res, next) => {
 
 router.post("/login", (req, res, next) => {
     let fetchedUser;
-    User.findOne({ email: req.body.email})
+    User.findOne({ username: req.body.username})
         .then(user => {
             if (!user) {
                 return res.status(401).json({
@@ -50,14 +50,15 @@ router.post("/login", (req, res, next) => {
                 });
             }
             const token = jwt.sign(
-                {email: fetchedUser.email, role: fetchedUser.role, userId: fetchedUser._id},
+                {email: fetchedUser.email, role: fetchedUser.role, username: fetchedUser.username, userId: fetchedUser._id},
                 'secret_nader',
                 {expiresIn: "1h"}
             );
             res.status(200).json({
                 token: token,
                 expiresIn: 3600,
-                userId: fetchedUser._id
+                username: fetchedUser.username,
+                userId: fetchedUser._id,
             })
         })
         .catch(err => {

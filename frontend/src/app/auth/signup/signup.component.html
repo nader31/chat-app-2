@@ -2,13 +2,13 @@
     <div>
       <input
         type="text"
-        name="name"
+        name="username"
         ngModel
         required
-        placeholder="Name"
-        #nameInput="ngModel"
+        placeholder="Username"
+        #usernameInput="ngModel"
         >
-        <p *ngIf="nameInput.invalid">Please enter a valid name.</p>
+        <p *ngIf="usernameInput.invalid">Please enter a valid username.</p>
     </div>
     <div>
       <input

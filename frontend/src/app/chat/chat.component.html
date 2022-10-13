@@ -1,42 +1,39 @@
-<div class="chat-container">
-  <header class="chat-header">
-    <h1><i class="fas fa-smile"></i> ChatApp</h1>
-    <button (click)="leaveRoom()" class="btn">Leave Room</button>
-  </header>
+<div class="chat-component-container">
   <main class="chat-main">
-    <div class="chat-sidebar">
-      <h3><i class="fas fa-comments"></i> Room Name:</h3>
-      <button (click)="changeRoom('room1')" id="room-name">
-        Room1
-      </button>
-      <button (click)="changeRoom('room2')" id="room-name">
-        Room2
-      </button>
-      <button (click)="changeRoom('room3')" id="room-name">
-        Room3
-      </button>
-      <h3><i class="fas fa-users"></i> Users</h3>
-      <ul id="users"></ul>
-    </div>
-    <div class="messages-container">
-      <div class="chat-messages">
-        <div class="message" *ngFor="let message of messages">
-          <p class="meta">{{message.username}}<span>{{message.time}}</span></p>
-          <p class="text">{{message.text}}</p>
+      <div class="chat-sidebar">
+        <h3><i class="fas fa-comments"></i> Room Name:</h3>
+        <div class="rooms" *ngFor="let room_name of rooms">
+          <button (click)="changeRoom(room_name)" id="room-name" [ngClass]="{active: room == room_name}">
+            {{room_name}}
+          </button>
+        </div>
+        <h3><i class="fas fa-users"></i> Users</h3>
+        <ul id="users"></ul>
+      </div>
+      <div class="messages-container">
+        <div class="chat-messages">
+          <div *ngFor="let message of messages">
+            <div class="message" *ngIf="message.username !== 'bot'">
+              <p class="meta">{{message.username}}<span>{{message.date}}</span></p>
+              <p class="text">{{message.text}}</p>
+            </div>
+            <div class="info-message" *ngIf="message.username === 'bot'">
+              <p class="text">{{message.text}}</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
-  <div class="chat-form-container">
-    <input
-      id="msg"
-      [formControl]="msg"
-      type="text"
-      placeholder="Enter Message"
-      required
-      autocomplete="off"
-      name="message"
-    />
-    <button (click)="sendMessage()" class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+    </main>
+    <div class="chat-form-container">
+      <input
+        id="msg"
+        [formControl]="msg"
+        type="text"
+        placeholder="Enter Message"
+        required
+        autocomplete="off"
+        name="message"
+      />
+      <button (click)="sendMessage()" class="btn"><i class="fas fa-paper-plane"></i> Send</button>
   </div>
 </div>
