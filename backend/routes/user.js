@@ -12,7 +12,6 @@ router.post("/signup", (req, res, next) => {
         const user = new User({
             username: req.body.username,
             email: req.body.email,
-            role: 'member',
             password: hash
         });
         user.save()
@@ -67,5 +66,53 @@ router.post("/login", (req, res, next) => {
             })
         })
 });
+
+// Get all the users
+router.get("",(req, res, next) => {
+    User.find()
+        .then(users => {
+            let usersArray = [];
+            users.forEach(user => {
+                usersArray.push({id:user._id, username: user.username});
+            });
+            res.status(200).json(usersArray);
+        });
+});
+
+router.get("/:id",(req,res,next) => {
+    User.findById(req.params.id).then(user => {
+        if (user) {
+            res.status(200).json(user);
+            console.log(user);
+        } else {
+            res.status(404).json({message: 'User not found!'});
+            console.log('user not found');
+        }
+    })
+})
+
+router.get("/:id/role",(req,res,next) => {
+    User.findById(req.params.id).then(user => {
+        if (user) {
+            res.status(200).json(user.role);
+            console.log(user.role);
+        } else {
+            res.status(404).json({message: 'User not found!'});
+            console.log('user not found');
+        }
+    })
+})
+
+router.get("/username/:username",(req,res,next) => {
+    User.findOne({username: req.params.username}).then(user => {
+        if (user) {
+            res.status(200).json(user);
+            console.log(user);
+        } else {
+            res.status(404).json({message: 'User not found!'});
+            console.log('user not found');
+        }
+    })
+})
 
 module.exports = router;

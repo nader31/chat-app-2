@@ -1,0 +1,28 @@
+<h1>Create a group</h1>
+<div class="form-container">
+  <div class="form">
+    <div class="divInput">
+      <input
+        id="nameInput"
+        [formControl]="nameInput"
+        type="text"
+        placeholder="Name"
+        required
+        autocomplete="off"
+        name="nameInput"
+        >
+    </div>
+    <div class="div">
+      <ng-multiselect-dropdown
+        [placeholder]="'Add users'"
+        [settings]="dropdownSettings"
+        [data]="dropdownList"
+        [(ngModel)]="selectedItems"
+        (onSelect)="onItemSelect($event)"
+        (onDeSelect)="onDeSelect($event)"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+    <button (click)="onCreateGroup()">Create</button>
+  </div>
+</div>

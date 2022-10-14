@@ -1,20 +1,35 @@
 <div class="chat-component-container">
   <main class="chat-main">
       <div class="chat-sidebar">
-        <h3><i class="fas fa-comments"></i> Room Name:</h3>
-        <div class="rooms" *ngFor="let room_name of rooms">
-          <button (click)="changeRoom(room_name)" id="room-name" [ngClass]="{active: room == room_name}">
-            {{room_name}}
-          </button>
+        <div class="groups-sidebar">
+          <h3><i class="fas fa-comments"></i> Groups</h3>
+          <div class="rooms" *ngFor="let group_ of groups">
+            <button (click)="changeGroup(group_.id, group_.name)" id="group-name" [ngClass]="{active: group_.id === group.id}">
+              {{group_.name}}
+            </button>
+          </div>
         </div>
-        <h3><i class="fas fa-users"></i> Users</h3>
-        <ul id="users"></ul>
+        <div class="rooms-sidebar" *ngIf="rooms.length > 0">
+          <h3><i class="fas fa-comments"></i> Role: <span [ngClass]="{admin: userGroupRole === 'admin'}">{{userGroupRole}}</span></h3>
+          <h3><i class="fas fa-comments"></i> Rooms</h3>
+          <div class="rooms" *ngFor="let room_name of rooms">
+            <button (click)="changeRoom(room_name)" id="room-name" [ngClass]="{active: room == room_name}">
+              #{{room_name}}
+            </button>
+          </div>
+          <h3><i class="fas fa-users"></i>Active users</h3>
+          <ul id="users" *ngIf="room !== ''">
+            <li *ngFor="let user of connectedUsers"><span [ngClass]="{admin: user.role == 'admin'}">{{user.username}}</span></li>
+          </ul>
+          <h3><i class="fas fa-users"></i>All group users</h3>
+            <p *ngFor="let user of groupUsers"><span [ngClass]="{admin: user.groupRole == 'admin'}">{{user.username}}</span></p>
+        </div>
       </div>
       <div class="messages-container">
         <div class="chat-messages">
-          <div *ngFor="let message of messages">
+          <div *ngFor="let message of sortedMessages">
             <div class="message" *ngIf="message.username !== 'bot'">
-              <p class="meta">{{message.username}}<span>{{message.date}}</span></p>
+              <p class="meta">{{message.username}}<span *ngIf="message.date">{{message.date | date :'short'}}</span></p>
               <p class="text">{{message.text}}</p>
             </div>
             <div class="info-message" *ngIf="message.username === 'bot'">
@@ -24,7 +39,7 @@
         </div>
       </div>
     </main>
-    <div class="chat-form-container">
+    <div class="chat-form-container" *ngIf="room !== ''">
       <input
         id="msg"
         [formControl]="msg"

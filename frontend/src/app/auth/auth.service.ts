@@ -17,6 +17,26 @@ export class AuthService {
 
   constructor(private http:HttpClient, private router:Router) { }
 
+  getAllUsers() {
+    return this.http.get
+      ("http://localhost:3000/api/user/");
+  }
+
+  getUserById(id:string) {
+    return this.http.get
+      ("http://localhost:3000/api/user/" + id);
+  }
+
+  getUserRoleById(id:string) {
+    return this.http.get
+      ("http://localhost:3000/api/user/" + id + "/role");
+  }
+
+  getUserByUsername(username:string) {
+    return this.http.get
+    ("http://localhost:3000/api/user/username/" + username);
+  }
+
   getToken() {
     return this.token;
   }

@@ -38,10 +38,25 @@ h1 {
 .chat-sidebar {
 	background: $dark-color-b;
 	color: #fff;
+  display: flex;
+
+}
+
+.rooms-sidebar {
 	padding: 20px 20px 60px;
 	overflow-y: scroll;
   display: flex;
   flex-direction: column;
+  border-left: 1px solid rgba(255, 255, 255, 0.036);
+  width: 100%;
+}
+
+.groups-sidebar {
+  padding: 20px 20px 60px;
+	overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .chat-sidebar #room-name {
@@ -54,6 +69,20 @@ h1 {
   border-radius: 5px;
 }
 
+.chat-sidebar #group-name {
+  all: unset;
+  cursor: pointer;
+	font-size: 15px;
+	background: rgba(0, 0, 0, 0.1);
+	padding: 15px 10px;
+	margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.chat-sidebar #group-name.active {
+  background: #5865F2;
+}
+
 .chat-sidebar #room-name.active {
   background: #5865F2;
 }
@@ -62,8 +91,47 @@ h1 {
 	margin-bottom: 15px;
 }
 
+.chat-sidebar p span {
+  color: #50fffc;
+}
+
+.chat-sidebar p span.admin {
+  color: #d9534f;
+}
+
+.chat-sidebar h3 span {
+	color: #50fffc;
+}
+
+.chat-sidebar h3 span.admin {
+	color: #d9534f;
+}
+
+.chat-sidebar ul {
+  list-style: none;
+  padding-inline-start: 0px;
+}
+
 .chat-sidebar ul li {
 	padding: 10px 0;
+}
+
+.chat-sidebar ul li:before {
+  content:"\A";
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background: #7eff53;
+  display:inline-block;
+  margin:0 10px;
+}
+
+.chat-sidebar ul li span {
+  color: #50fffc;
+}
+
+.chat-sidebar ul li span.admin {
+  color: #ff5050;
 }
 
 .messages-container {
