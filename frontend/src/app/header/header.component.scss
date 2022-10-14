@@ -1,0 +1,41 @@
+$dark-color-a: #303135;
+$dark-color-b: #212226;
+$light-color: #45484d;
+$success-color: #5cb85c;
+$error-color: #d9534f;
+
+ul {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+h1 {
+  color: #5865F2;
+  margin: 0;
+}
+
+.btn {
+	cursor: pointer;
+	padding: 5px 15px;
+	background: #5865F2;
+	color: white;
+	border: 0;
+	font-size: 17px;
+  border-radius: 30px;
+  margin-left: 10px;
+}
+
+.chat-header {
+	background: $dark-color-a;
+	color: #fff;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	padding: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+  height: 100px;
+}

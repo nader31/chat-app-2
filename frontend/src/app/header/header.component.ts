@@ -10,18 +10,18 @@ import { AuthService } from '../auth/auth.service';
 export class HeaderComponent implements OnInit {
   userIsAuthenticated = false;
   private authListenerSubs!: Subscription;
-  userId!: string | null;
+  username!: string | null;
 
   constructor(private authService:AuthService) { }
 
   ngOnInit(): void {
     this.userIsAuthenticated = this.authService.getIsAuth();
-    this.userId = this.authService.getUserId();
+    this.username = this.authService.getUsername();
     this.authListenerSubs = this.authService
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
-        this.userId = this.authService.getUserId();
+        this.username = this.authService.getUsername();
       });
   }
 

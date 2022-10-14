@@ -10,9 +10,8 @@ router.post("/signup", (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
-            name: req.body.name,
+            username: req.body.username,
             email: req.body.email,
-            role: 'member',
             password: hash
         });
         user.save()
@@ -33,7 +32,7 @@ router.post("/signup", (req, res, next) => {
 
 router.post("/login", (req, res, next) => {
     let fetchedUser;
-    User.findOne({ email: req.body.email})
+    User.findOne({ username: req.body.username})
         .then(user => {
             if (!user) {
                 return res.status(401).json({
@@ -50,14 +49,15 @@ router.post("/login", (req, res, next) => {
                 });
             }
             const token = jwt.sign(
-                {email: fetchedUser.email, role: fetchedUser.role, userId: fetchedUser._id},
+                {email: fetchedUser.email, role: fetchedUser.role, username: fetchedUser.username, userId: fetchedUser._id},
                 'secret_nader',
                 {expiresIn: "1h"}
             );
             res.status(200).json({
                 token: token,
                 expiresIn: 3600,
-                userId: fetchedUser._id
+                username: fetchedUser.username,
+                userId: fetchedUser._id,
             })
         })
         .catch(err => {
@@ -66,5 +66,53 @@ router.post("/login", (req, res, next) => {
             })
         })
 });
+
+// Get all the users
+router.get("",(req, res, next) => {
+    User.find()
+        .then(users => {
+            let usersArray = [];
+            users.forEach(user => {
+                usersArray.push({id:user._id, username: user.username});
+            });
+            res.status(200).json(usersArray);
+        });
+});
+
+router.get("/:id",(req,res,next) => {
+    User.findById(req.params.id).then(user => {
+        if (user) {
+            res.status(200).json(user);
+            console.log(user);
+        } else {
+            res.status(404).json({message: 'User not found!'});
+            console.log('user not found');
+        }
+    })
+})
+
+router.get("/:id/role",(req,res,next) => {
+    User.findById(req.params.id).then(user => {
+        if (user) {
+            res.status(200).json(user.role);
+            console.log(user.role);
+        } else {
+            res.status(404).json({message: 'User not found!'});
+            console.log('user not found');
+        }
+    })
+})
+
+router.get("/username/:username",(req,res,next) => {
+    User.findOne({username: req.params.username}).then(user => {
+        if (user) {
+            res.status(200).json(user);
+            console.log(user);
+        } else {
+            res.status(404).json({message: 'User not found!'});
+            console.log('user not found');
+        }
+    })
+})
 
 module.exports = router;
