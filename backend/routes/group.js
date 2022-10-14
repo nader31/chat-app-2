@@ -59,6 +59,16 @@ router.get("/:groupId/user/:userId/", (req, res, next) => {
     })
 });
 
+router.put("/:id",
+    (req, res, next) => {
+    Group.findByIdAndUpdate({_id:req.params.id},req.body).then(() => {
+        Group.findOne({_id:req.params.id}).then(newResult => {
+            res.status(200).json(newResult);
+        })
+
+    })
+})
+
 
 router.get("/:id", (req, res, next) => {
     Group.findById(req.params.id).then(group => {

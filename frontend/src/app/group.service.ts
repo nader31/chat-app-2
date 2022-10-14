@@ -33,12 +33,22 @@ export class GroupService {
   }
 
   createGroup(name:any, users:any[]) {
-    users.push({userId: this.userId, role:"admin"});
-    const group:any = {name: name, users: users, };
+    let group:any = {name: name, users: users, rooms: [{name: "general"}]};
     this.http
     .post<{message:string,  postId: string}>('http://localhost:3000/api/group',group)
-    .subscribe((responseData) => {
-      console.log(responseData);
+    .subscribe((response) => {
+      console.log(response);
     });
+  }
+
+  updateGroup(id:string, name:any, users:any[], rooms:{name:string}[]) {
+    users.push({userId: this.userId, role:"admin"});
+    let group:{name:string, users:{userId:string,role:string}[],rooms:{name:string}[]} = {name: name, users: users, rooms: rooms};
+    console.log(group);
+    this.http
+      .put("http://localhost:3000/api/group/" + id, group)
+      .subscribe(response => {
+        console.log(response);
+      });
   }
 }
