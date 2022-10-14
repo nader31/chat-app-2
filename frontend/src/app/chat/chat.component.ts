@@ -116,8 +116,8 @@ export class ChatComponent implements OnInit {
         group.users.forEach((user:any) => {
           this.authService.getUserById(user.userId)
             .subscribe((userFetched:any) => {
-              this.groupUsers.push({username:userFetched.username, groupRole: user.role, id: user._id, role: user.role});
-              console.log({username:userFetched.username, groupRole: user.role, id: user._id, role: user.role});
+              this.groupUsers.push({username:userFetched.username, groupRole: user.role, id: user._id, role: userFetched.role});
+              console.log({role: user.role});
             })
         })
       })
