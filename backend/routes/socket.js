@@ -1,19 +1,5 @@
 const Message = require('../models/message');
-const User = require('../models/user');
-const moment = require('moment');
 const mongoose = require('mongoose');
-
-//const formatMessage = require('./utils/messages');
-//const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users');
-
-// async function getUsername(username) {
-//     try {
-//         const user = await User.findOne({ username:username});
-//         return user._id
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
 
 module.exports = {
     connect: function(io, port) {
@@ -66,10 +52,10 @@ module.exports = {
                 socket.broadcast.emit('connected-users', {users: connectedUsers,room: room, group: group});
             })
         
-            socket.on('message', ({username, userId, text, room, group, image}) => {
+            socket.on('message', ({username, userId, text, room, group, image, userImage}) => {
                 const message = new Message({text: text, creator: mongoose.Types.ObjectId(userId), room: room, group: mongoose.Types.ObjectId(group), image:image});
                 message.save().then(() => {
-                    io.of('/chat').to(room).emit('message', {text: text, date: Date.now(), creator: username, room: room, group: group, image: image});
+                    io.of('/chat').to(room).emit('message', {text: text, date: Date.now(), creator: username, room: room, group: group, image: image, userImage: userImage});
                 })
                 console.log(mongoose.Types.ObjectId(userId));
                 console.log(userId);

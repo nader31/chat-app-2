@@ -1,0 +1,70 @@
+<div class="chat-component-container">
+  <main class="chat-main">
+      <div class="chat-sidebar">
+        <div class="groups-sidebar">
+          <h3><i class="fas fa-comments"></i> Groups</h3>
+          <div class="rooms" *ngFor="let group_ of groups">
+            <button (click)="changeGroup(group_.id, group_.name)" id="group-name" [ngClass]="{active: group_.id === group.id}">
+              {{group_.name}}
+            </button>
+          </div>
+          <button routerLink="create" id="group-create">
+            <svg fill="white" id="Layer_1" height="15" viewBox="0 0 24 24" width="15" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"><path d="m12 0a12 12 0 1 0 12 12 12.013 12.013 0 0 0 -12-12zm0 22a10 10 0 1 1 10-10 10.011 10.011 0 0 1 -10 10zm1-11h4v2h-4v4h-2v-4h-4v-2h4v-4h2z"/></svg>Create a new group
+          </button>
+        </div>
+        <div class="rooms-sidebar" *ngIf="rooms.length > 0">
+          <h3>Role: <span [ngClass]="{admin: userGroupRole === 'admin'}">{{userGroupRole}}</span></h3>
+          <button routerLink="/group/{{group.id}}" *ngIf="userGroupRole === 'admin'" id="group-create">Manage group</button>
+          <h3><i class="fas fa-comments"></i> Rooms</h3>
+          <div class="rooms" *ngFor="let room_name of rooms">
+            <button (click)="changeRoom(room_name)" id="room-name" [ngClass]="{active: room == room_name}">
+              #{{room_name}}
+            </button>
+          </div>
+          <h3><i class="fas fa-users"></i>Active users</h3>
+          <ul id="users" *ngIf="room !== ''">
+            <li *ngFor="let user of connectedUsers"><span [ngClass]="{admin: user.role == 'admin'}">{{user.username}}</span></li>
+          </ul>
+          <ul id="users" *ngIf="room == ''">
+            <h5>No active users</h5>
+          </ul>
+          <h3><i class="fas fa-users"></i>All group users</h3>
+            <p *ngFor="let user of groupUsers"><img [src]="user.image"><span [ngClass]="{admin: user.groupRole == 'admin' || user.role == 'admin'}">{{user.username}}</span></p>
+        </div>
+      </div>
+      <div class="messages-container">
+        <div class="chat-messages">
+          <div *ngFor="let message of sortedMessages">
+            <div class="message" *ngIf="message.username !== 'bot'">
+              <img class="message-img" *ngIf="message.image != '../assets/images/undefined' && message.image" [src]="message.image">
+              <p class="meta"><img class="profile-pic" [src]="message.userImage">{{message.username}}<span *ngIf="message.date">{{message.date | date :'short'}}</span></p>
+              <p class="text">{{message.text}}</p>
+            </div>
+            <div class="info-message" *ngIf="message.username === 'bot'">
+              <p class="text">{{message.text}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="chat-form-container" *ngIf="room !== ''">
+      <div *ngIf="url" class="form-photo">
+        <img src="{{url}}" alt="">
+      </div>
+      <div class="form-input">
+        <input
+        id="msg"
+        [formControl]="msg"
+        type="text"
+        placeholder="Enter Message"
+        required
+        autocomplete="off"
+        name="message"
+      />
+      <label for="imageUpload"><svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M19,0H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H19a5.006,5.006,0,0,0,5-5V5A5.006,5.006,0,0,0,19,0ZM5,2H19a3,3,0,0,1,3,3V19a2.951,2.951,0,0,1-.3,1.285l-9.163-9.163a5,5,0,0,0-7.072,0L2,14.586V5A3,3,0,0,1,5,2ZM5,22a3,3,0,0,1-3-3V17.414l4.878-4.878a3,3,0,0,1,4.244,0L20.285,21.7A2.951,2.951,0,0,1,19,22Z"/><path d="M16,10.5A3.5,3.5,0,1,0,12.5,7,3.5,3.5,0,0,0,16,10.5Zm0-5A1.5,1.5,0,1,1,14.5,7,1.5,1.5,0,0,1,16,5.5Z"/></svg>
+      </label>
+      <input type="file" name="imageUpload" id="imageUpload" (change)="onSelectFile($event)" hidden>
+      <button (click)="sendMessage()" class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+      </div>
+  </div>
+</div>

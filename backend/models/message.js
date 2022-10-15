@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const messageSchema = mongoose.Schema({
-    text: { type: String, required: true },
+    text: { type: String},
     date: { type: String, default: () => Date.now() },
     creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     room: {type: String, required: true},

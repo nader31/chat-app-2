@@ -1,12 +1,12 @@
 import { createComponent, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './auth/auth.guard';
-import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
-import { ChatComponent } from './chat/chat.component';
-import { CreateGroupComponent } from './create-group/create-group.component';
-import { GroupComponent } from './group/group.component';
-import { ProfileComponent } from './profile/profile.component';
+import { AuthGuard } from './components/auth/auth.guard';
+import { LoginComponent } from './components/auth/login/login.component';
+import { SignupComponent } from './components/auth/signup/signup.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { CreateGroupComponent } from './components/create-group/create-group.component';
+import { GroupComponent } from './components/group/group.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   {path: '', component: ChatComponent, canActivate: [AuthGuard]},
