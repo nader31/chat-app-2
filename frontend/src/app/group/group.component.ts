@@ -46,16 +46,17 @@ export class GroupComponent implements OnInit {
         this.rooms = group.rooms;
         let users:any[] = group.users;
         users.forEach((user:any) => {
-          this.authService.getUserById(user.userId)
-            .subscribe((fetchedUser:any) => {
-              console.log('user_id: ',this.userId);
-              console.log('user_id 2:', user.userId);
-              if(this.userId != user.userId) {
-                this.previousUsers.push({id: user.userId, username: fetchedUser.username, role: user.role});
-                this.selectedItems = this.previousUsers;
-                this.users.push({id: user.userId, username: fetchedUser.username});
-              }
-            })
+            this.authService.getUserById(user.userId)
+              .subscribe((fetchedUser:any) => {
+                console.log('user_id: ',this.userId);
+                console.log('user_id 2:', user.userId);
+                if(this.userId != user.userId) {
+                  this.previousUsers.push({id: user.userId, username: fetchedUser.username, role: user.role});
+                  this.selectedItems = this.previousUsers;
+                  this.users.push({id: user.userId, username: fetchedUser.username});
+                }
+              })
+
         });
     })
 
@@ -115,7 +116,7 @@ export class GroupComponent implements OnInit {
   makeUserAdmin(user:any) {
     if(user.role == "member") {
       for(var i=0;i < this.previousUsers.length;i++) {
-        if(this.previousUsers[i].userId === user.userId)
+        if(this.previousUsers[i].id === user.id)
         {
           this.previousUsers[i].role='admin';
         }
@@ -123,7 +124,7 @@ export class GroupComponent implements OnInit {
       console.log(this.previousUsers);
     } else {
       for(var i=0;i < this.previousUsers.length;i++) {
-        if(this.previousUsers[i].userId === user.userId)
+        if(this.previousUsers[i].id === user.id)
         {
           this.previousUsers[i].role='member';
         }

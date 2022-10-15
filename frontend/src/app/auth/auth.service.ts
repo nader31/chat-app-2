@@ -12,7 +12,7 @@ export class AuthService {
   private token!:string | null;
   private tokenTimer!:NodeJS.Timer;
   private username!: string | null;
-  private userId!: string | null;
+  private userId!: string | any;
   private authStatusListener = new Subject<boolean>();
 
   constructor(private http:HttpClient, private router:Router) { }
@@ -20,6 +20,11 @@ export class AuthService {
   getAllUsers() {
     return this.http.get
       ("http://localhost:3000/api/user/");
+  }
+
+  getAuthUser() {
+    return this.http.get
+      ("http://localhost:3000/api/user/" + this.getUserId());
   }
 
   getUserById(id:string) {
@@ -35,6 +40,21 @@ export class AuthService {
   getUserByUsername(username:string) {
     return this.http.get
     ("http://localhost:3000/api/user/username/" + username);
+  }
+
+  updateImage(fileName:string) {
+    console.log({image: "../assets/images/" + fileName});
+    console.log(this.getUserId());
+    if(fileName) {
+      return this.http.put
+      ("http://localhost:3000/api/user/" + this.getUserId(), {image: "../assets/images/" + fileName})
+      .subscribe((result) => {
+        console.log(result);
+      })
+    } else {
+      console.log('Image not found');
+      return;
+    }
   }
 
   getToken() {

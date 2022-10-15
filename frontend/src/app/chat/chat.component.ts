@@ -17,24 +17,29 @@ export class ChatComponent implements OnInit {
   group:{id:string, name:string} = {id: '', name: ''};
   msg = new FormControl('');
   username!: string | null;
-  userId!: any;
+  userId!: string | any;
   rooms:string[] = [];
   connectedUsers:{username:string,role:string}[] = [];
   groups:{id: string, name: string}[] = [];
   userGroupRole:string | null = null;
-  groupUsers:{username:string, groupRole:string, role:string, id:string}[] = [];
+  groupUsers:{username:string, groupRole:string, role:string, id:string, image:string}[] = [];
+  url!:string | null;
+  selectedImageName!:string;
 
   constructor(private socketService:SocketService, private authService:AuthService, private groupService:GroupService) { }
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
+    console.log(this.userId);
     this.username = this.authService.getUsername();
-    this.groupService.getGroupsByUserId(this.userId)
-      .subscribe((groups:any) => {
-        groups.forEach((group:any) => {
-          this.groups.push({id: group._id, name: group.name});
-        });
-      })
+    if(this.userId.length > 10) {
+      this.groupService.getGroupsByUserId(this.userId)
+        .subscribe((groups:any) => {
+          groups.forEach((group:any) => {
+            this.groups.push({id: group._id, name: group.name});
+          });
+        })
+    }
     this.socketService.initSocket();
     this.socketService.listen('infoMessage')
       .subscribe((data: any) => {
@@ -51,7 +56,7 @@ export class ChatComponent implements OnInit {
             this.authService
               .getUserById(message.creator)
               .subscribe((user:any) => {
-                this.messages.push({username: user.username, text: message.text, date: message.date, room: message.room, group: message.group});
+                this.messages.push({username: user.username, text: message.text, date: message.date, room: message.room, group: message.group, image: message.image});
                 this.sortedMessages = this.messages.sort((a:any,b:any) => a.date - b.date);
               });
           }
@@ -61,7 +66,7 @@ export class ChatComponent implements OnInit {
     this.socketService.listen('message')
     .subscribe((data: any) => {
       console.log(data);
-      this.messages.push({username: data.creator, text: data.text, date: data.date, room: data.room, group: data.group});
+      this.messages.push({username: data.creator, text: data.text, date: data.date, room: data.room, group: data.group, image: data.image});
     })
     console.log('userId: ' + this.userId);
     this.socketService.listen('connected-users')
@@ -114,11 +119,16 @@ export class ChatComponent implements OnInit {
           this.rooms.push(room.name);
         });
         group.users.forEach((user:any) => {
-          this.authService.getUserById(user.userId)
-            .subscribe((userFetched:any) => {
-              this.groupUsers.push({username:userFetched.username, groupRole: user.role, id: user._id, role: userFetched.role});
-              console.log({role: user.role});
-            })
+            this.authService.getUserById(user.userId)
+              .subscribe((userFetched:any) => {
+                let image:any;
+                if (userFetched.image) {
+                  image = userFetched.image;
+                } else {
+                  image = '../assets/images/user.png';
+                }
+                this.groupUsers.push({username:userFetched.username, groupRole: user.role, id: user._id, role: userFetched.role, image: image});
+              })
         })
       })
       console.log('groupUsers: ',this.groupUsers);
@@ -146,11 +156,24 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.msg.value) {
-      this.socketService.emit('message',{username: this.authService.getUsername(), userId: this.authService.getUserId(), text: this.msg.value, room: this.room, group: this.group});
+      this.socketService.emit('message',{username: this.authService.getUsername(), userId: this.authService.getUserId(), text: this.msg.value, room: this.room, group: this.group, image: '../assets/images/' + this.selectedImageName});
       console.log(this.authService.getUsername());
       console.log(this.msg.value);
       console.log(this.room);
+      console.log('../assets/images/' + this.selectedImageName);
       this.msg.reset();
+      this.url = null;
+    }
+  }
+
+  onSelectFile(e:any) {
+    if(e.target.files) {
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload=(event:any)=>{
+        this.url=event.target.result;
+      }
+      this.selectedImageName = e.target.files[0].name;
     }
   }
 

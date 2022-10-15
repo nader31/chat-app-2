@@ -66,10 +66,10 @@ module.exports = {
                 socket.broadcast.emit('connected-users', {users: connectedUsers,room: room, group: group});
             })
         
-            socket.on('message', ({username, userId, text, room, group}) => {
-                const message = new Message({text: text, creator: mongoose.Types.ObjectId(userId), room: room, group: mongoose.Types.ObjectId(group)});
+            socket.on('message', ({username, userId, text, room, group, image}) => {
+                const message = new Message({text: text, creator: mongoose.Types.ObjectId(userId), room: room, group: mongoose.Types.ObjectId(group), image:image});
                 message.save().then(() => {
-                    io.of('/chat').to(room).emit('message', {text: text, date: Date.now(), creator: username, room: room, group: group});
+                    io.of('/chat').to(room).emit('message', {text: text, date: Date.now(), creator: username, room: room, group: group, image: image});
                 })
                 console.log(mongoose.Types.ObjectId(userId));
                 console.log(userId);

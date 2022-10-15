@@ -10,7 +10,10 @@ import { AuthService } from '../auth/auth.service';
 export class HeaderComponent implements OnInit {
   userIsAuthenticated = false;
   private authListenerSubs!: Subscription;
-  username!: string | null;
+  username!: string | any;
+  user!:any;
+  userImage:any = '';
+  role:any = '';
 
   constructor(private authService:AuthService) { }
 
@@ -22,7 +25,21 @@ export class HeaderComponent implements OnInit {
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
         this.username = this.authService.getUsername();
+        this.authService.getUserByUsername(this.username)
+          .subscribe((user:any) => {
+            if(user.image) {
+              this.userImage = user.image;
+            }
+            this.role = user.role;
+        })
       });
+    this.authService.getAuthUser()
+      .subscribe((user:any) => {
+        if(user.image) {
+          this.userImage = user.image;
+        }
+        this.role = user.role;
+    })
   }
 
   onLogout() {

@@ -5,7 +5,8 @@ const messageSchema = mongoose.Schema({
     date: { type: String, default: () => Date.now() },
     creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     room: {type: String, required: true},
-    group: {type: String} 
+    group: {type: String},
+    image: {type: String}
 });
 
 module.exports = mongoose.model('message', messageSchema);

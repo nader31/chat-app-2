@@ -13,6 +13,7 @@ import { ChatComponent } from './chat/chat.component';
 import { GroupComponent } from './group/group.component';
 import { CreateGroupComponent } from './create-group/create-group.component';
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
     ChatComponent,
     GroupComponent,
     CreateGroupComponent,
+    ProfileComponent,
   ],
   imports: [
     FormsModule,
