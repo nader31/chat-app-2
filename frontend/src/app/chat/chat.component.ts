@@ -46,14 +46,16 @@ export class ChatComponent implements OnInit, OnDestroy {
         }
       })
 
-    if(this.userId.length > 10) {
-      this.groupService.getGroupsByUserId(this.userId)
-        .subscribe((groups:any) => {
-          groups.forEach((group:any) => {
-            this.groups.push({id: group._id, name: group.name});
-          });
-        })
-    }
+      if (this.userId != undefined) {
+        if(this.userId.length > 10) {
+          this.groupService.getGroupsByUserId(this.userId)
+            .subscribe((groups:any) => {
+              groups.forEach((group:any) => {
+                this.groups.push({id: group._id, name: group.name});
+              });
+            })
+        }
+      }
     this.socketService.initSocket();
     this.socketService.listen('infoMessage')
       .subscribe((data: any) => {

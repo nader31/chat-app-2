@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { GroupService } from '../group.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { AuthService } from '../auth/auth.service';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-create-group',
   templateUrl: './create-group.component.html',
   styleUrls: ['./create-group.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class CreateGroupComponent implements OnInit {
 

@@ -1,8 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HeaderComponent } from './header.component';
+import { AuthService } from '../auth/auth.service';
 
 describe('HeaderComponent', () => {
+
+  beforeEach(() => TestBed.configureTestingModule({
+    imports: [HttpClientTestingModule],
+    providers: [AuthService]
+  }));
+
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
 

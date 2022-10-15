@@ -1,6 +1,13 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { AuthService } from './auth/auth.service';
 
 import { GroupService } from './group.service';
+
+beforeEach(() => TestBed.configureTestingModule({
+  imports: [HttpClientTestingModule],
+  providers: [AuthService, GroupService]
+}));
 
 describe('GroupService', () => {
   let service: GroupService;

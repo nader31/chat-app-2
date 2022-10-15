@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "mocha"
+    "test": "mocha --timeout 10000"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^4.3.6",
     "mocha": "^10.0.0",
     "nodemon": "^2.0.20"
   },
@@ -22,6 +23,7 @@
     "moment": "^2.29.4",
     "mongoose": "^6.6.5",
     "mongoose-unique-validator": "^3.1.0",
-    "socket.io": "^4.5.2"
+    "socket.io": "^4.5.2",
+    "socket.io-client": "^4.5.3"
   }
 }
