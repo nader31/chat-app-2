@@ -19,11 +19,11 @@ export class GroupComponent implements OnInit {
   userId:any;
   groupId:any;
   group:any = '';
-  previousUsers:any = [];
+  previousUsers:any[] = [];
   rooms!:{name:string}[];
 
   dropdownList!:{id:string, username:string}[];
-  selectedItems:{id:string, username:string}[] = []
+  selectedItems!:{id:string, username:string}[];
   dropdownSettings!:IDropdownSettings;
 
   constructor(private groupService:GroupService, private router:Router, private authService:AuthService, private route: ActivatedRoute) {
@@ -37,6 +37,7 @@ export class GroupComponent implements OnInit {
         this.dropdownList = users.filter(function(value: { id: any; }, index: any, arr: any){
           return userId != value.id;
       });
+      console.log('dropdownList',this.dropdownList);
     });
 
     this.userId = this.authService.getUserId();
@@ -45,6 +46,8 @@ export class GroupComponent implements OnInit {
         this.group = group;
         this.rooms = group.rooms;
         let users:any[] = group.users;
+        console.log('users: ',group.users);
+        let i = 0;
         users.forEach((user:any) => {
             this.authService.getUserById(user.userId)
               .subscribe((fetchedUser:any) => {
@@ -52,13 +55,20 @@ export class GroupComponent implements OnInit {
                 console.log('user_id 2:', user.userId);
                 if(this.userId != user.userId) {
                   this.previousUsers.push({id: user.userId, username: fetchedUser.username, role: user.role});
-                  this.selectedItems = this.previousUsers;
                   this.users.push({id: user.userId, username: fetchedUser.username});
+                  console.log('previousUsers',this.previousUsers);
+                  if(this.previousUsers.length > i-2) {
+                    this.selectedItems = this.previousUsers;
+                  }
+                  console.log('selectedUsers: ',this.selectedItems);
+
                 }
               })
-
+            i++
         });
     })
+
+    //this.selectedItems = [{id: "634741641f6ee18abfa6dc5c", username: "user"}];
 
     this.dropdownSettings = {
       singleSelection: false,

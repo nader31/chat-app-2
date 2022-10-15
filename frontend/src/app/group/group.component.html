@@ -17,7 +17,7 @@
         id="roomsInput"
         [formControl]="roomsInput"
         type="text"
-        placeholder="room1, room2, ..."
+        placeholder="add rooms: room1,room2,"
         required
         autocomplete="off"
         name="roomsInput"
@@ -25,8 +25,8 @@
     </div>
     <div class="div">
       <h2>make admin: </h2>
-      <div *ngFor="let user of previousUsers" class="users">
-        <button [ngClass]="{admin: user.role == 'admin'}" class="user" (click)="makeUserAdmin(user)">
+      <div class="users">
+        <button *ngFor="let user of previousUsers" [ngClass]="{admin: user.role == 'admin'}" class="user" (click)="makeUserAdmin(user)">
           {{user.username}}
         </button>
       </div>
