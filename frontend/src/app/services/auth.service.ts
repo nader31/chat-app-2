@@ -17,31 +17,37 @@ export class AuthService {
 
   constructor(private http:HttpClient, private router:Router) { }
 
+  // Gets all users info
   getAllUsers() {
     return this.http.get
       ("http://localhost:3000/api/user/");
   }
 
+  // Gets the authenticated user's info
   getAuthUser() {
     return this.http.get
       ("http://localhost:3000/api/user/" + this.getUserId());
   }
 
+  // Gets the a user's info by it's id
   getUserById(id:string) {
     return this.http.get
       ("http://localhost:3000/api/user/" + id);
   }
 
+  // Gets the a user's role by it's id
   getUserRoleById(id:string) {
     return this.http.get
       ("http://localhost:3000/api/user/" + id + "/role");
   }
 
+  // Gets the a user's info by it's username
   getUserByUsername(username:string) {
     return this.http.get
     ("http://localhost:3000/api/user/username/" + username);
   }
 
+  // Updates the a user's image
   updateImage(fileName:string) {
     console.log({image: "../assets/images/" + fileName});
     console.log(this.getUserId());
@@ -57,26 +63,32 @@ export class AuthService {
     }
   }
 
+  // Gets the token
   getToken() {
     return this.token;
   }
 
+  // Gets authentication status
   getIsAuth() {
     return this.isAuthenticated;
   }
 
+  // Gets auth user's username
   getUsername() {
     return this.username;
   }
 
+  // Gets auth user's id
   getUserId() {
     return this.getAuthData()?.userId;
   }
 
+  // Gets auth observable
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
   }
 
+  // Creates a user
   createUser(username:string, email:string, password:string){
     const authData: {email: string} & AuthData = {username: username, email: email, password: password}
     this.http.post("http://localhost:3000/api/user/signup", authData)
@@ -85,6 +97,7 @@ export class AuthService {
       });
   }
 
+  // Logs the user into the app
   login(username:string, password: string) {
     const authData: AuthData = {username: username, password: password}
     this.http.post<{token: string, expiresIn: number, username: string, userId: string}>("http://localhost:3000/api/user/login", authData)
@@ -108,6 +121,7 @@ export class AuthService {
       });
   }
 
+  // Automatically logs a user
   autoAuthUser() {
     const authInformation = this.getAuthData();
     if (!authInformation) {
@@ -124,6 +138,7 @@ export class AuthService {
     }
   }
 
+  // Logs out the user from the app
   logout() {
     this.token = null;
     this.isAuthenticated = false;
@@ -134,6 +149,7 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  // Set the timer of the token
   private setAuthTimer(duration:number) {
     console.log("Setting timer: " + duration);
     this.tokenTimer = setTimeout(() => {
@@ -141,6 +157,7 @@ export class AuthService {
     }, duration * 1000);
   }
 
+  // Saves auth data into local storage
   private saveAuthData(token: string, expirationDate: Date, username:string, userId:string) {
     localStorage.setItem('token',token);
     localStorage.setItem('expiration',expirationDate.toISOString());
@@ -148,6 +165,7 @@ export class AuthService {
     localStorage.setItem("userId", userId);
   }
 
+  // Clear auth data from local storage
   private clearAuthData() {
     localStorage.removeItem("token");
     localStorage.removeItem("expiration");
@@ -155,6 +173,7 @@ export class AuthService {
     localStorage.removeItem("userId");
   }
 
+  // Get auth data into local storage
   private getAuthData() {
     const token = localStorage.getItem("token");
     const expirationDate = localStorage.getItem("expiration");

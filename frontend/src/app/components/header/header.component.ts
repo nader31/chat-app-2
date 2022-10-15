@@ -42,10 +42,12 @@ export class HeaderComponent implements OnInit {
     })
   }
 
+  // Logout when user logs out
   onLogout() {
     this.authService.logout();
   }
 
+  // Unsubscribe when component is destroyed
   ngOnDestroy(): void {
     this.authListenerSubs.unsubscribe();
   }

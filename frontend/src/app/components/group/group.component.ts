@@ -37,7 +37,6 @@ export class GroupComponent implements OnInit {
         this.dropdownList = users.filter(function(value: { id: any; }, index: any, arr: any){
           return userId != value.id;
       });
-      console.log('dropdownList',this.dropdownList);
     });
 
     this.userId = this.authService.getUserId();
@@ -46,22 +45,16 @@ export class GroupComponent implements OnInit {
         this.group = group;
         this.rooms = group.rooms;
         let users:any[] = group.users;
-        console.log('users: ',group.users);
         let i = 0;
         users.forEach((user:any) => {
             this.authService.getUserById(user.userId)
               .subscribe((fetchedUser:any) => {
-                console.log('user_id: ',this.userId);
-                console.log('user_id 2:', user.userId);
                 if(this.userId != user.userId) {
                   this.previousUsers.push({id: user.userId, username: fetchedUser.username, role: user.role});
                   this.users.push({id: user.userId, username: fetchedUser.username});
-                  console.log('previousUsers',this.previousUsers);
                   if(this.previousUsers.length > i-2) {
                     this.selectedItems = this.previousUsers;
                   }
-                  console.log('selectedUsers: ',this.selectedItems);
-
                 }
               })
             i++
@@ -82,6 +75,7 @@ export class GroupComponent implements OnInit {
     };
   }
 
+  // Updates the group
   onUpdateGroup() {
     let usersIds:any = [];
     let idsToRemove:any = [];
@@ -96,12 +90,9 @@ export class GroupComponent implements OnInit {
       return '' != value.name;
     });
 
-    console.log(this.users);
     this.users.forEach(user => {
       this.previousUsers.forEach((previousUser:any) => {
-        console.log(this.previousUsers);
         if (previousUser.id == user.id) {
-          console.log('2 ids',previousUser.id,user.id)
           usersIds.push({userId: user.id, role: previousUser.role});
           idsToRemove.push(user.id);
         }
@@ -118,11 +109,11 @@ export class GroupComponent implements OnInit {
       usersIds.push({userId: user.id, role: "member"});
     });
 
-    console.log(this.rooms,usersIds);
     this.groupService.updateGroup(this.groupId,this.group.name,usersIds,this.rooms);
     this.router.navigate(['/']);
   }
 
+  // Change the group's role of a user
   makeUserAdmin(user:any) {
     if(user.role == "member") {
       for(var i=0;i < this.previousUsers.length;i++) {
@@ -131,7 +122,6 @@ export class GroupComponent implements OnInit {
           this.previousUsers[i].role='admin';
         }
       }
-      console.log(this.previousUsers);
     } else {
       for(var i=0;i < this.previousUsers.length;i++) {
         if(this.previousUsers[i].id === user.id)
@@ -139,15 +129,15 @@ export class GroupComponent implements OnInit {
           this.previousUsers[i].role='member';
         }
       }
-      console.log(this.previousUsers);
     }
   }
 
+  // When user is selected
   onItemSelect(item: any) {
     this.users.push(item);
-    console.log(this.users);
   }
 
+  // When user is deselected
   onDeSelect(item: any) {
     this.users = this.users.filter(function(value, index, arr){
         return item.id != value.id;
@@ -159,6 +149,5 @@ export class GroupComponent implements OnInit {
         })
       }
     });
-    console.log(this.users);
   }
 }

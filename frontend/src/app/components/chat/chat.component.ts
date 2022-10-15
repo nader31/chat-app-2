@@ -34,9 +34,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
-    console.log(this.userId);
     this.username = this.authService.getUsername();
-
     this.authService.getUserById(this.userId)
       .subscribe((user:any) => {
         if(user.image) {
@@ -59,14 +57,12 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.socketService.initSocket();
     this.socketService.listen('infoMessage')
       .subscribe((data: any) => {
-        console.log(data)
         if(data.room === this.room && data.group == this.group.id) {
           this.messages.push({username: 'bot', text: data.text, room: data.room, group: data.group});
         }
       })
     this.socketService.listen('output-messages')
       .subscribe((messages: any) => {
-        console.log(messages);
         messages.forEach( (message: any) => {
           if(message.room === this.room && message.group == this.group.id) {
             this.authService
@@ -81,10 +77,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.socketService.emit('joinRoom', {username: this.username, room: this.room, group: this.group.id});
     this.socketService.listen('message')
     .subscribe((data: any) => {
-      console.log(data);
       this.messages.push({username: data.creator, text: data.text, date: data.date, room: data.room, group: data.group, image: data.image, userImage: data.userImage});
     })
-    console.log('userId: ' + this.userId);
     this.socketService.listen('connected-users')
     .subscribe((users: any) => {
       if (users.room === this.room) {
@@ -98,20 +92,20 @@ export class ChatComponent implements OnInit, OnDestroy {
                 })
             })
         });
-        console.log('connected users: ', users);
       }
     })
   }
 
+  // Make a user leave a room
   leaveRoom(room:string, group:string) {
     this.socketService.emit('leaveRoom', {username: this.username, room: room, group: group});
   }
 
+  // Make a user change his current room
   changeRoom(room:string) {
     if(this.room !== room) {
       this.leaveRoom(this.room, this.group.id);
       this.room = room;
-      console.log(room);
       this.socketService.emit('joinRoom', {username: this.username, room: room, group: this.group.id});
       this.messages = [];
       this.sortedMessages = [];
@@ -123,6 +117,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Make a user change his current group
   changeGroup(groupId:string, groupName:string) {
     if(this.group.id !== groupId) {
       this.group = {id: groupId, name: groupName};
@@ -147,7 +142,6 @@ export class ChatComponent implements OnInit, OnDestroy {
               })
         })
       })
-      console.log('groupUsers: ',this.groupUsers);
       this.groupService.getUserGroupInfoById(this.group.id,this.userId)
       .subscribe((user:any) => {
         if (user) {
@@ -156,32 +150,28 @@ export class ChatComponent implements OnInit, OnDestroy {
       })
       this.messages = [];
       this.sortedMessages = [];
-      console.log(this.group);
     } else {
       this.leaveRoom(this.room,this.group.id);
       this.group = {id: '', name: ''};
       this.rooms = [];
       this.groupUsers = [];
       this.room = '';
-      console.log(this.group);
       this.messages = [];
       this.sortedMessages = [];
       this.userGroupRole = null;
     }
   }
 
+  // Sends a message to the chat
   sendMessage() {
     if (this.msg.value) {
       this.socketService.emit('message',{username: this.authService.getUsername(), userId: this.authService.getUserId(), text: this.msg.value, room: this.room, group: this.group, image: '../assets/images/' + this.selectedImageName, userImage: this.userImage});
-      console.log(this.authService.getUsername());
-      console.log(this.msg.value);
-      console.log(this.room);
-      console.log('../assets/images/' + this.selectedImageName);
       this.msg.reset();
       this.url = null;
     }
   }
 
+  // Display image when file selected
   onSelectFile(e:any) {
     if(e.target.files) {
       var reader = new FileReader();

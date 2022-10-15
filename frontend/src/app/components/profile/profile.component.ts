@@ -21,7 +21,6 @@ export class ProfileComponent implements OnInit {
       this.authService.getUserByUsername(this.username)
       .subscribe((user:any) => {
         this.user = user;
-        console.log(user);
         if(user.image) {
           this.image = user.image
         } else {
@@ -31,6 +30,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  // Display image when file selected
   onSelectFile(e:any) {
     if(e.target.files) {
       var reader = new FileReader();
@@ -42,6 +42,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  // Save user's image
   onSave() {
     this.authService.updateImage(this.selectedImageName);
   }

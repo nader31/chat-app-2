@@ -47,8 +47,8 @@ export class CreateGroupComponent implements OnInit {
     };
   }
 
+  // Creates a group
   onCreateGroup() {
-    console.log('group created!');
     let usersIds:any = [];
     this.users.forEach(user => {
       usersIds.push({userId: user.id, role: "member"})
@@ -57,15 +57,15 @@ export class CreateGroupComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  // When user is selected
   onItemSelect(item: any) {
     this.users.push(item);
-    console.log(this.users);
   }
 
+  // When user is deselected
   onDeSelect(item: any) {
     this.users = this.users.filter(function(value, index, arr){
         return item.id != value.id;
     });
-    console.log(this.users);
   }
 }

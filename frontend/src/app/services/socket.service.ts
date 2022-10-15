@@ -13,11 +13,13 @@ export class SocketService {
     this.socket = io.io(this.uri);
   }
 
+  // Initialise a socket
   initSocket(){
     this.socket = io.io(this.uri);
     return ()=>{this.socket.disconnect();}
   }
 
+  // Listen to sockets
   listen(eventName:string) {
     return new Observable((subscriber) => {
       this.socket.on(eventName, (data: any) => {
@@ -26,6 +28,7 @@ export class SocketService {
     });
   }
 
+  // Emit sockets
   emit(eventName:string, data:any) {
       this.socket.emit(eventName, data);
   }
