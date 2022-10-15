@@ -5,17 +5,14 @@ import { AuthService } from '../../services/auth.service';
 
 describe('HeaderComponent', () => {
 
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule],
-    providers: [AuthService]
-  }));
-
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
+      declarations: [ HeaderComponent ],
+      imports: [HttpClientTestingModule],
+      providers: [AuthService]
     })
     .compileComponents();
 

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
-import { Group } from 'src/app/models/group.model';
+import { Group, GroupInfo } from 'src/app/models/group.model';
 import { Message } from 'src/app/models/message.model';
 import { Room } from 'src/app/models/room.model';
 import { User } from 'src/app/models/user.model';
@@ -18,13 +18,13 @@ export class ChatComponent implements OnInit, OnDestroy {
   sortedMessages:Message[] = [];
   messagecontent = '';
   room = '';
-  group:Group = {id: '', name: ''};
+  group:GroupInfo = {id: '', name: ''};
   msg = new FormControl('');
   username!: string | null;
   userId!: string | any;
   rooms:string[] = [];
   connectedUsers:{username:string,role:string}[] = [];
-  groups:Group[] = [];
+  groups:GroupInfo[] = [];
   userGroupRole:string | null = null;
   groupUsers:User[] = [];
   url!:string | null;

@@ -1,6 +1,4 @@
 const Message = require('../models/message');
-const User = require('../models/user');
-const moment = require('moment');
 const mongoose = require('mongoose');
 
 module.exports = {

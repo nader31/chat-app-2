@@ -8,6 +8,8 @@ import { AuthData } from '../components/auth/auth-data.module';
   providedIn: 'root'
 })
 export class AuthService {
+  ROOT_URL = 'http://localhost:3000/api/user/';
+
   private isAuthenticated = false;
   private token!:string | null;
   private tokenTimer!:NodeJS.Timer;
@@ -20,38 +22,38 @@ export class AuthService {
   // Gets all users info
   getAllUsers() {
     return this.http.get
-      ("http://localhost:3000/api/user/");
+      (this.ROOT_URL);
   }
 
   // Gets the authenticated user's info
   getAuthUser() {
     return this.http.get
-      ("http://localhost:3000/api/user/" + this.getUserId());
+      (this.ROOT_URL + this.getUserId());
   }
 
   // Gets the a user's info by it's id
   getUserById(id:string) {
     return this.http.get
-      ("http://localhost:3000/api/user/" + id);
+      (this.ROOT_URL + id);
   }
 
   // Gets the a user's role by it's id
   getUserRoleById(id:string) {
     return this.http.get
-      ("http://localhost:3000/api/user/" + id + "/role");
+      (this.ROOT_URL + id + "/role");
   }
 
   // Gets the a user's info by it's username
   getUserByUsername(username:string) {
     return this.http.get
-    ("http://localhost:3000/api/user/username/" + username);
+    (this.ROOT_URL + "username/" + username);
   }
 
   // Updates the a user's image
   updateImage(fileName:string) {
     if(fileName) {
       return this.http.put
-      ("http://localhost:3000/api/user/" + this.getUserId(), {image: "../assets/images/" + fileName})
+      (this.ROOT_URL + this.getUserId(), {image: "../assets/images/" + fileName})
       .subscribe((result) => {
       })
     } else {
@@ -87,7 +89,7 @@ export class AuthService {
   // Creates a user
   createUser(username:string, email:string, password:string){
     const authData: {email: string} & AuthData = {username: username, email: email, password: password}
-    this.http.post("http://localhost:3000/api/user/signup", authData)
+    this.http.post(this.ROOT_URL + "user/signup", authData)
       .subscribe(response => {
       });
   }
@@ -95,7 +97,7 @@ export class AuthService {
   // Logs the user into the app
   login(username:string, password: string) {
     const authData: AuthData = {username: username, password: password}
-    this.http.post<{token: string, expiresIn: number, username: string, userId: string}>("http://localhost:3000/api/user/login", authData)
+    this.http.post<{token: string, expiresIn: number, username: string, userId: string}>(this.ROOT_URL + "user/login", authData)
       .subscribe(response => {
         const token = response.token;
         this.token = token;

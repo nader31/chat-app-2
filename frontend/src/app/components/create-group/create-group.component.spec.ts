@@ -9,14 +9,11 @@ describe('CreateGroupComponent', () => {
   let component: CreateGroupComponent;
   let fixture: ComponentFixture<CreateGroupComponent>;
 
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule],
-    providers: [AuthService, GroupService]
-  }));
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateGroupComponent ]
+      declarations: [ CreateGroupComponent ],
+      imports: [HttpClientTestingModule],
+      providers: [AuthService, GroupService]
     })
     .compileComponents();
 

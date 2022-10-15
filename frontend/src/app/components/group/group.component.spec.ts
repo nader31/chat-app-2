@@ -10,14 +10,11 @@ describe('GroupComponent', () => {
   let component: GroupComponent;
   let fixture: ComponentFixture<GroupComponent>;
 
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule, RouterTestingModule],
-    providers: [AuthService, GroupService]
-  }));
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GroupComponent ]
+      declarations: [ GroupComponent ],
+      imports: [HttpClientTestingModule, RouterTestingModule],
+      providers: [AuthService, GroupService]
     })
     .compileComponents();
 

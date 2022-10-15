@@ -87,7 +87,6 @@ router.get("/:id",(req,res,next) => {
                 console.log(user);
             } else {
                 res.status(404).json({message: 'User not found!'});
-                console.log('user not found');
             }
         })
     } else {
