@@ -23,6 +23,8 @@ export class ChatComponent implements OnInit {
   groups:{id: string, name: string}[] = [];
   userGroupRole:string | null = null;
   groupUsers:{username:string, groupRole:string, role:string, id:string, image:string}[] = [];
+  url!:string | null;
+  selectedImageName!:string;
 
   constructor(private socketService:SocketService, private authService:AuthService, private groupService:GroupService) { }
 
@@ -54,7 +56,7 @@ export class ChatComponent implements OnInit {
             this.authService
               .getUserById(message.creator)
               .subscribe((user:any) => {
-                this.messages.push({username: user.username, text: message.text, date: message.date, room: message.room, group: message.group});
+                this.messages.push({username: user.username, text: message.text, date: message.date, room: message.room, group: message.group, image: message.image});
                 this.sortedMessages = this.messages.sort((a:any,b:any) => a.date - b.date);
               });
           }
@@ -64,7 +66,7 @@ export class ChatComponent implements OnInit {
     this.socketService.listen('message')
     .subscribe((data: any) => {
       console.log(data);
-      this.messages.push({username: data.creator, text: data.text, date: data.date, room: data.room, group: data.group});
+      this.messages.push({username: data.creator, text: data.text, date: data.date, room: data.room, group: data.group, image: data.image});
     })
     console.log('userId: ' + this.userId);
     this.socketService.listen('connected-users')
@@ -154,11 +156,24 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.msg.value) {
-      this.socketService.emit('message',{username: this.authService.getUsername(), userId: this.authService.getUserId(), text: this.msg.value, room: this.room, group: this.group});
+      this.socketService.emit('message',{username: this.authService.getUsername(), userId: this.authService.getUserId(), text: this.msg.value, room: this.room, group: this.group, image: '../assets/images/' + this.selectedImageName});
       console.log(this.authService.getUsername());
       console.log(this.msg.value);
       console.log(this.room);
+      console.log('../assets/images/' + this.selectedImageName);
       this.msg.reset();
+      this.url = null;
+    }
+  }
+
+  onSelectFile(e:any) {
+    if(e.target.files) {
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload=(event:any)=>{
+        this.url=event.target.result;
+      }
+      this.selectedImageName = e.target.files[0].name;
     }
   }
 

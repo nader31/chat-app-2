@@ -54,7 +54,7 @@ h1 {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-  height: 100px;
+  height: 70px;
 }
 
 .profile {
@@ -74,7 +74,11 @@ h1 {
   padding-left: 15px;
 }
 
-img {
+.logo {
+  width: 200px;
+}
+
+.profile-div img {
   height: 40px;
   width: 40px;
   border-radius: 50%;
