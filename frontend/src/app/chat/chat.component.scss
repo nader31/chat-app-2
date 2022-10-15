@@ -292,6 +292,19 @@ h1 {
   flex-direction: column;
 }
 
+.rooms-sidebar p img {
+  height: 20px;
+  width: 20px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.rooms-sidebar p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 @media (max-width: 700px) {
 	.chat-main {
 		display: block;

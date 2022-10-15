@@ -17,24 +17,27 @@ export class ChatComponent implements OnInit {
   group:{id:string, name:string} = {id: '', name: ''};
   msg = new FormControl('');
   username!: string | null;
-  userId!: any;
+  userId!: string | any;
   rooms:string[] = [];
   connectedUsers:{username:string,role:string}[] = [];
   groups:{id: string, name: string}[] = [];
   userGroupRole:string | null = null;
-  groupUsers:{username:string, groupRole:string, role:string, id:string}[] = [];
+  groupUsers:{username:string, groupRole:string, role:string, id:string, image:string}[] = [];
 
   constructor(private socketService:SocketService, private authService:AuthService, private groupService:GroupService) { }
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
+    console.log(this.userId);
     this.username = this.authService.getUsername();
-    this.groupService.getGroupsByUserId(this.userId)
-      .subscribe((groups:any) => {
-        groups.forEach((group:any) => {
-          this.groups.push({id: group._id, name: group.name});
-        });
-      })
+    if(this.userId.length > 10) {
+      this.groupService.getGroupsByUserId(this.userId)
+        .subscribe((groups:any) => {
+          groups.forEach((group:any) => {
+            this.groups.push({id: group._id, name: group.name});
+          });
+        })
+    }
     this.socketService.initSocket();
     this.socketService.listen('infoMessage')
       .subscribe((data: any) => {
@@ -114,11 +117,16 @@ export class ChatComponent implements OnInit {
           this.rooms.push(room.name);
         });
         group.users.forEach((user:any) => {
-          this.authService.getUserById(user.userId)
-            .subscribe((userFetched:any) => {
-              this.groupUsers.push({username:userFetched.username, groupRole: user.role, id: user._id, role: userFetched.role});
-              console.log({role: user.role});
-            })
+            this.authService.getUserById(user.userId)
+              .subscribe((userFetched:any) => {
+                let image:any;
+                if (userFetched.image) {
+                  image = userFetched.image;
+                } else {
+                  image = '../assets/images/user.png';
+                }
+                this.groupUsers.push({username:userFetched.username, groupRole: user.role, id: user._id, role: userFetched.role, image: image});
+              })
         })
       })
       console.log('groupUsers: ',this.groupUsers);
