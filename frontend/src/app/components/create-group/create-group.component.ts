@@ -5,6 +5,7 @@ import { GroupService } from '../../services/group.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { AuthService } from '../../services/auth.service';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-create-group',
@@ -15,9 +16,9 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 export class CreateGroupComponent implements OnInit {
 
   nameInput = new FormControl('');
-  users:any[] = [];
-  fetchedUsers:any = [];
-  userId:any;
+  users:User[] = [];
+  fetchedUsers:User[] = [];
+  userId: string | any;
 
   dropdownList!:{item_id:number, item_text:string}[];
   selectedItems!:{item_id:number, item_text:string}[];

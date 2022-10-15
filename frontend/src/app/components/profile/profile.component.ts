@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/models/user.model';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class ProfileComponent implements OnInit {
   username!:string | null;
-  user:any = '';
+  user:User | any = '';
   image!:string
   selectedImageName!:string;
   url:any;

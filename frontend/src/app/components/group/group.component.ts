@@ -2,6 +2,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { Room } from 'src/app/models/room.model';
+import { User } from 'src/app/models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { GroupService } from '../../services/group.service';
 
@@ -14,16 +16,16 @@ import { GroupService } from '../../services/group.service';
 export class GroupComponent implements OnInit {
 
   roomsInput = new FormControl('');
-  users:any[] = [];
-  fetchedUsers:any = [];
-  userId:any;
+  users:User[] = [];
+  fetchedUsers:User[] = [];
+  userId: string | any;
   groupId:any;
   group:any = '';
-  previousUsers:any[] = [];
-  rooms!:{name:string}[];
+  previousUsers:User[] = [];
+  rooms!:Room[];
 
-  dropdownList!:{id:string, username:string}[];
-  selectedItems!:{id:string, username:string}[];
+  dropdownList!:User[];
+  selectedItems!:User[];
   dropdownSettings!:IDropdownSettings;
 
   constructor(private groupService:GroupService, private router:Router, private authService:AuthService, private route: ActivatedRoute) {
@@ -144,7 +146,7 @@ export class GroupComponent implements OnInit {
     });
     this.previousUsers.forEach((user:any) => {
       if(item.id == user.id) {
-        this.previousUsers = this.previousUsers.filter(function(value: { id: any; }, index: any, arr: any){
+        this.previousUsers = this.previousUsers.filter(function(value, index: any, arr: any){
           return item.id != value.id;
         })
       }

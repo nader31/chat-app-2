@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { User } from 'src/app/models/user.model';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -11,9 +12,9 @@ export class HeaderComponent implements OnInit {
   userIsAuthenticated = false;
   private authListenerSubs!: Subscription;
   username!: string | any;
-  user!:any;
-  userImage:any = '';
-  role:any = '';
+  user!:User;
+  userImage:string = '';
+  role:string = '';
 
   constructor(private authService:AuthService) { }
 

@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
+import { Group } from 'src/app/models/group.model';
+import { Message } from 'src/app/models/message.model';
+import { Room } from 'src/app/models/room.model';
+import { User } from 'src/app/models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { GroupService } from '../../services/group.service';
 import { SocketService } from '../../services/socket.service';
@@ -10,19 +14,19 @@ import { SocketService } from '../../services/socket.service';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  messages: {username: string, text: string, date:Date | null} | any = [];
-  sortedMessages: {username: string, text: string, date:Date | null} | any = [];
+  messages:Message[] = [];
+  sortedMessages:Message[] = [];
   messagecontent = '';
   room = '';
-  group:{id:string, name:string} = {id: '', name: ''};
+  group:Group = {id: '', name: ''};
   msg = new FormControl('');
   username!: string | null;
   userId!: string | any;
   rooms:string[] = [];
   connectedUsers:{username:string,role:string}[] = [];
-  groups:{id: string, name: string}[] = [];
+  groups:Group[] = [];
   userGroupRole:string | null = null;
-  groupUsers:{username:string, groupRole:string, role:string, id:string, image:string}[] = [];
+  groupUsers:User[] = [];
   url!:string | null;
   selectedImageName!:string;
   userImage!:string;
@@ -122,6 +126,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if(this.group.id !== groupId) {
       this.group = {id: groupId, name: groupName};
       this.leaveRoom(this.room,this.group.id);
+      this.room = '';
       this.rooms = [];
       this.groupUsers = [];
       this.groupService.getGroupById(this.group.id)
@@ -166,6 +171,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   sendMessage() {
     if (this.msg.value) {
       this.socketService.emit('message',{username: this.authService.getUsername(), userId: this.authService.getUserId(), text: this.msg.value, room: this.room, group: this.group, image: '../assets/images/' + this.selectedImageName, userImage: this.userImage});
+      this.msg.reset();
+      this.url = null;
+    } else if (this.selectedImageName && !this.msg.value) {
+      this.socketService.emit('message',{username: this.authService.getUsername(), userId: this.authService.getUserId(), text: '', room: this.room, group: this.group, image: '../assets/images/' + this.selectedImageName, userImage: this.userImage});
       this.msg.reset();
       this.url = null;
     }

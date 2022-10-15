@@ -1,8 +1,10 @@
 export interface Message {
-  _id: string;
+  _id?: string;
   text: string;
-  creator: string;
+  username: string;
   room: string;
+  date?: Date;
   group: string;
-  image: string;
+  image?: string;
+  userImage?:string;
 }

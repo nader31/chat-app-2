@@ -49,16 +49,12 @@ export class AuthService {
 
   // Updates the a user's image
   updateImage(fileName:string) {
-    console.log({image: "../assets/images/" + fileName});
-    console.log(this.getUserId());
     if(fileName) {
       return this.http.put
       ("http://localhost:3000/api/user/" + this.getUserId(), {image: "../assets/images/" + fileName})
       .subscribe((result) => {
-        console.log(result);
       })
     } else {
-      console.log('Image not found');
       return;
     }
   }
@@ -93,7 +89,6 @@ export class AuthService {
     const authData: {email: string} & AuthData = {username: username, email: email, password: password}
     this.http.post("http://localhost:3000/api/user/signup", authData)
       .subscribe(response => {
-        console.log(response);
       });
   }
 
@@ -110,11 +105,9 @@ export class AuthService {
           this.isAuthenticated = true;
           this.username = response.username;
           this.userId = response.userId;
-          console.log(this.userId);
           this.authStatusListener.next(true);
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-          console.log(expirationDate);
           this.saveAuthData(token,expirationDate, this.username, this.userId);
           this.router.navigate(['/']);
         }
@@ -151,7 +144,6 @@ export class AuthService {
 
   // Set the timer of the token
   private setAuthTimer(duration:number) {
-    console.log("Setting timer: " + duration);
     this.tokenTimer = setTimeout(() => {
       this.logout();
     }, duration * 1000);

@@ -1,12 +1,13 @@
 export interface Group {
-  _id: string;
+  _id?: string;
+  id: string;
   name: string;
-  users: {
+  users?: {
     _id:string,
     userId:string,
     role:string
   }[];
-  rooms: {
+  rooms?: {
     _id:string,
     name:string
   }[];
