@@ -49,7 +49,7 @@ router.post("/login", (req, res, next) => {
                 });
             }
             const token = jwt.sign(
-                {email: fetchedUser.email, role: fetchedUser.role, username: fetchedUser.username, userId: fetchedUser._id},
+                {email: fetchedUser.email, role: fetchedUser.role, username: fetchedUser.username, userId: fetchedUser._id, image: fetchedUser.image},
                 'secret_nader',
                 {expiresIn: "1h"}
             );
@@ -80,15 +80,19 @@ router.get("",(req, res, next) => {
 });
 
 router.get("/:id",(req,res,next) => {
-    User.findById(req.params.id).then(user => {
-        if (user) {
-            res.status(200).json(user);
-            console.log(user);
-        } else {
-            res.status(404).json({message: 'User not found!'});
-            console.log('user not found');
-        }
-    })
+    if (req.params.id.length > 10) {
+        User.findById(req.params.id).then(user => {
+            if (user) {
+                res.status(200).json(user);
+                console.log(user);
+            } else {
+                res.status(404).json({message: 'User not found!'});
+                console.log('user not found');
+            }
+        })
+    } else {
+        console.log('id not found',req.params.id);
+    }
 })
 
 router.get("/:id/role",(req,res,next) => {
@@ -112,6 +116,16 @@ router.get("/username/:username",(req,res,next) => {
             res.status(404).json({message: 'User not found!'});
             console.log('user not found');
         }
+    })
+})
+
+router.put("/:id",
+    (req, res, next) => {
+    User.findByIdAndUpdate({_id:req.params.id},req.body).then(() => {
+        User.findOne({_id:req.params.id}).then(newResult => {
+            res.status(200).json(newResult);
+        })
+
     })
 })
 

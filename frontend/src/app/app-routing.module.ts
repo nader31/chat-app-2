@@ -6,6 +6,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { ChatComponent } from './chat/chat.component';
 import { CreateGroupComponent } from './create-group/create-group.component';
 import { GroupComponent } from './group/group.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {path: '', component: ChatComponent, canActivate: [AuthGuard]},
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'create', component: CreateGroupComponent},
   {path: 'group/:id', component: GroupComponent},
+  {path: 'profile', component: ProfileComponent},
 ];
 
 @NgModule({
