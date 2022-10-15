@@ -97,7 +97,7 @@ export class AuthService {
   // Logs the user into the app
   login(username:string, password: string) {
     const authData: AuthData = {username: username, password: password}
-    this.http.post<{token: string, expiresIn: number, username: string, userId: string}>(this.ROOT_URL + "user/login", authData)
+    this.http.post<{token: string, expiresIn: number, username: string, userId: string}>(this.ROOT_URL + "login", authData)
       .subscribe(response => {
         const token = response.token;
         this.token = token;
