@@ -23,20 +23,11 @@ When a big feature was complete, I would push my code and make a pull request to
 
 # Data Structures
 
-Group Schema |
------------- |
-name (String) |
-users (userSchema) |
-rooms (roomSchema) |
-
-User Schema (for Groups) |
------------- |
-userId (ObjectId ref User) |
-role (String) |
-
-Room Schema (Channels) |
------------- |
-name (String) |
+Group Schema | User Schema (for Groups) | Room Schema (Channels)
+------------ | ------------ | ------------
+name (String) | userId (ObjectId ref User) | name (String) |
+users (userSchema) | userId (ObjectId ref User)
+rooms (roomSchema) | role (String)
 
 Message Schema |
 ------------ |
@@ -53,4 +44,4 @@ name (String) |
 email (String) |
 password (String) |
 role (String) |
-image (String)
+image (String) |
