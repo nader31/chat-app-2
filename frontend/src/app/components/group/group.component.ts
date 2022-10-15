@@ -2,8 +2,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { AuthService } from '../auth/auth.service';
-import { GroupService } from '../group.service';
+import { AuthService } from '../../services/auth.service';
+import { GroupService } from '../../services/group.service';
 
 @Component({
   selector: 'app-group',

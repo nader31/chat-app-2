@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HeaderComponent } from './header.component';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 describe('HeaderComponent', () => {
 

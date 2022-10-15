@@ -5,15 +5,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
-import { AuthInterceptor } from './auth/auth-interceptor';
-import { HeaderComponent } from './header/header.component';
-import { ChatComponent } from './chat/chat.component';
-import { GroupComponent } from './group/group.component';
-import { CreateGroupComponent } from './create-group/create-group.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { SignupComponent } from './components/auth/signup/signup.component';
+import { AuthInterceptor } from './components/auth/auth-interceptor';
+import { HeaderComponent } from './components/header/header.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { GroupComponent } from './components/group/group.component';
+import { CreateGroupComponent } from './components/create-group/create-group.component';
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [

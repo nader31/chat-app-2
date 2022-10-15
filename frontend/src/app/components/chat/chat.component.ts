@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
-import { AuthService } from '../auth/auth.service';
-import { GroupService } from '../group.service';
-import { SocketService } from '../socket.service';
+import { AuthService } from '../../services/auth.service';
+import { GroupService } from '../../services/group.service';
+import { SocketService } from '../../services/socket.service';
 
 @Component({
   selector: 'app-chat',

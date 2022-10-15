@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './auth.service';
 import { GroupService } from './group.service';
 
 import { SocketService } from './socket.service';
