@@ -25,8 +25,32 @@ When a big feature was complete, I would push my code and make a pull request to
 
 Group Schema |
 ------------ |
-Week 1 |
-Week 2 |
-Week 3 |
-Week 4 |
-Week 5 |
+name (String) |
+users (userSchema) |
+rooms (roomSchema) |
+
+User Schema (for Groups) |
+------------ |
+userId (ObjectId ref User) |
+role (String) |
+
+Room Schema (Channels) |
+------------ |
+name (String) |
+
+Message Schema |
+------------ |
+text (String) |
+date (Date) |
+creator (ObjectId ref User) |
+creator (ObjectId ref User) |
+group (String) |
+image (String) |
+
+User Schema |
+------------ |
+name (String) |
+email (String) |
+password (String) |
+role (String) |
+image (String)
