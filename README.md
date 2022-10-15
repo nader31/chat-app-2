@@ -23,20 +23,20 @@ When a big feature was complete, I would push my code and make a pull request to
 
 ## Data Structures
 
-Group Schema | User Schema (for Groups) | Room Schema (Channels) |
------------- | ------------ | ------------ |
-name (String) | userId (ObjectId ref User) | name (String) |
-users (userSchema) | userId (ObjectId ref User) |
-rooms (roomSchema) | role (String) |
+Group Schema          | User Schema (for Groups)      | Room Schema (Channels) |
+--------------------- | ----------------------------- | ---------------------- |
+name (String)         | userId (ObjectId ref User)    | name (String)          |
+_users_ (userSchema)  | _userId_ (ObjectId ref User)  |
+_rooms_ (roomSchema)  | role (String)                 |
 
-Message Schema | User Schema |
------------- | ------------ |
-text (String) | name (String) |
-date (Date) | email (String) |
-creator (ObjectId ref User) | password (String) |
-creator (ObjectId ref User) | role (String) |
-group (String) | image (String) |
-image (String) |
+Message Schema                | User Schema       |
+----------------------------- | ----------------- |
+text (String)                 | name (String)     |
+date (Date)                   | email (String)    |
+_creator_ (ObjectId ref User) | password (String) |
+creator (ObjectId ref User)   | role (String)     |
+group (String)                | image (String)    |
+image (String)                |
 
 ## Client - Server
 The __server__ handles the REST API, user authentication, sockets on the server side, and the MongoDB connection.
@@ -53,26 +53,26 @@ The __client__ manages all the frontend tasks, whether it is making requests to 
 
 ### __User routes:__
 
-Method | Route | Description |
----- | -------- | ---------------- |
-GET | /api/user/ | Get all users |
-POST | /api/user/signup | Creates a user |
-POST | /api/user/login | Send login info and returns back a JWT token |
-GET | /api/user/:id | Get user’s info by Id |
-GET | /api/user/:id/role | Get user's role by id |
-GET | /api/user/:username/username | Get user's info by username |
-PUT | /api/user/:id | Update user’s info |
+Method  | Route                         | Description                                   |
+------- | ----------------------------- | --------------------------------------------- |
+GET     | /api/user/                    | Get all users                                 |
+POST    | /api/user/signup              | Creates a user                                |
+POST    | /api/user/login               | Send login info and returns back a JWT token  |
+GET     | /api/user/:id                 | Get user’s info by Id                         |
+GET     | /api/user/:id/role            | Get user's role by id                         |
+GET     | /api/user/:username/username  | Get user's info by username                   |
+PUT     | /api/user/:id                 | Update user’s info                            |
 
 ### __User routes:__
 
-Method | Route | Description |
----- | -------- | ---------------- |
-GET | /api/group/ | Get all groups |
-POST | /api/group/ | Creates a group |
-GET | /api/group/:id | Get group info by id |
-GET | /api/group/user/:id | Get all groups which a user is a part of |
-GET | /api/group/user/:id/user/:userId | Get user group info from a specific group (role in the group) |
-PUT | /api/group/ | Update group’s info |
+Method  | Route                             | Description                                                   |
+------- | --------------------------------- | ------------------------------------------------------------- |
+GET     | /api/group/                       | Get all groups                                                |
+POST    | /api/group/                       | Creates a group                                               |
+GET     | /api/group/:id                    | Get group info by id                                          |
+GET     | /api/group/user/:id               | Get all groups which a user is a part of                      |
+GET     | /api/group/user/:id/user/:userId  | Get user group info from a specific group (role in the group) |
+PUT     | /api/group/ | Update group’s info |
 
 __Chat route:__
 The chat only allows requests from api/chat. This path will allow emission and reception of sockets between the server and the client through all the different rooms (channels).
