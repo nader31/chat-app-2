@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { GroupService } from '../group.service';
@@ -9,7 +9,7 @@ import { SocketService } from '../socket.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
   messages: {username: string, text: string, date:Date | null} | any = [];
   sortedMessages: {username: string, text: string, date:Date | null} | any = [];
   messagecontent = '';
@@ -25,13 +25,27 @@ export class ChatComponent implements OnInit {
   groupUsers:{username:string, groupRole:string, role:string, id:string, image:string}[] = [];
   url!:string | null;
   selectedImageName!:string;
+  userImage!:string;
 
   constructor(private socketService:SocketService, private authService:AuthService, private groupService:GroupService) { }
+  ngOnDestroy(): void {
+    this.leaveRoom(this.room,this.group.id);
+  }
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
     console.log(this.userId);
     this.username = this.authService.getUsername();
+
+    this.authService.getUserById(this.userId)
+      .subscribe((user:any) => {
+        if(user.image) {
+          this.userImage = user.image;
+        } else {
+          this.userImage = '../assets/images/user.png';
+        }
+      })
+
     if(this.userId.length > 10) {
       this.groupService.getGroupsByUserId(this.userId)
         .subscribe((groups:any) => {
@@ -56,7 +70,7 @@ export class ChatComponent implements OnInit {
             this.authService
               .getUserById(message.creator)
               .subscribe((user:any) => {
-                this.messages.push({username: user.username, text: message.text, date: message.date, room: message.room, group: message.group, image: message.image});
+                this.messages.push({username: user.username, text: message.text, date: message.date, room: message.room, group: message.group, image: message.image, userImage:user.image});
                 this.sortedMessages = this.messages.sort((a:any,b:any) => a.date - b.date);
               });
           }
@@ -66,7 +80,7 @@ export class ChatComponent implements OnInit {
     this.socketService.listen('message')
     .subscribe((data: any) => {
       console.log(data);
-      this.messages.push({username: data.creator, text: data.text, date: data.date, room: data.room, group: data.group, image: data.image});
+      this.messages.push({username: data.creator, text: data.text, date: data.date, room: data.room, group: data.group, image: data.image, userImage: data.userImage});
     })
     console.log('userId: ' + this.userId);
     this.socketService.listen('connected-users')
@@ -156,7 +170,7 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.msg.value) {
-      this.socketService.emit('message',{username: this.authService.getUsername(), userId: this.authService.getUserId(), text: this.msg.value, room: this.room, group: this.group, image: '../assets/images/' + this.selectedImageName});
+      this.socketService.emit('message',{username: this.authService.getUsername(), userId: this.authService.getUserId(), text: this.msg.value, room: this.room, group: this.group, image: '../assets/images/' + this.selectedImageName, userImage: this.userImage});
       console.log(this.authService.getUsername());
       console.log(this.msg.value);
       console.log(this.room);

@@ -36,8 +36,8 @@
         <div class="chat-messages">
           <div *ngFor="let message of sortedMessages">
             <div class="message" *ngIf="message.username !== 'bot'">
-              <img *ngIf="message.image != '../assets/images/undefined' && message.image" [src]="message.image">
-              <p class="meta">{{message.username}}<span *ngIf="message.date">{{message.date | date :'short'}}</span></p>
+              <img class="message-img" *ngIf="message.image != '../assets/images/undefined' && message.image" [src]="message.image">
+              <p class="meta"><img class="profile-pic" [src]="message.userImage">{{message.username}}<span *ngIf="message.date">{{message.date | date :'short'}}</span></p>
               <p class="text">{{message.text}}</p>
             </div>
             <div class="info-message" *ngIf="message.username === 'bot'">
