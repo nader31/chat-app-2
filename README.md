@@ -29,19 +29,11 @@ name (String) | userId (ObjectId ref User) | name (String) |
 users (userSchema) | userId (ObjectId ref User)
 rooms (roomSchema) | role (String)
 
-Message Schema |
------------- |
-text (String) |
-date (Date) |
-creator (ObjectId ref User) |
-creator (ObjectId ref User) |
-group (String) |
-image (String) |
-
-User Schema |
------------- |
-name (String) |
-email (String) |
-password (String) |
-role (String) |
+Message Schema | User Schema
+------------ | ------------
+text (String) | name (String)
+date (Date) | email (String)
+creator (ObjectId ref User) | password (String)
+creator (ObjectId ref User) | role (String)
+group (String) | image (String)
 image (String) |
