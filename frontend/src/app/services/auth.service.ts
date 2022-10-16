@@ -89,9 +89,10 @@ export class AuthService {
   // Creates a user
   createUser(username:string, email:string, password:string){
     const authData: {email: string} & AuthData = {username: username, email: email, password: password}
-    this.http.post(this.ROOT_URL + "user/signup", authData)
+    this.http.post(this.ROOT_URL + "signup", authData)
       .subscribe(response => {
       });
+      this.router.navigate(['/']);
   }
 
   // Logs the user into the app

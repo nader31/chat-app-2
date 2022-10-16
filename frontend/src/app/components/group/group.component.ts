@@ -63,8 +63,6 @@ export class GroupComponent implements OnInit {
         });
     })
 
-    //this.selectedItems = [{id: "634741641f6ee18abfa6dc5c", username: "user"}];
-
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
