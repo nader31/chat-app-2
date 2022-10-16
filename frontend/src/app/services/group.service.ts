@@ -51,7 +51,6 @@ export class GroupService {
 
   // Update a group
   updateGroup(id:string, name:any, users:any[], rooms:{name:string}[]) {
-    users.push({userId: this.userId, role:"admin"});
     let group:{name:string, users:{userId:string,role:string}[],rooms:{name:string}[]} = {name: name, users: users, rooms: rooms};
     console.log(group);
     this.http

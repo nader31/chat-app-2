@@ -16,16 +16,16 @@ import { GroupService } from '../../services/group.service';
 export class GroupComponent implements OnInit {
 
   roomsInput = new FormControl('');
-  users:User[] = [];
+  users:any[] = [];
   fetchedUsers:User[] = [];
   userId: string | any;
   groupId:any;
   group:any = '';
-  previousUsers:User[] = [];
+  previousUsers:any[] = [];
   rooms!:Room[];
 
-  dropdownList!:User[];
-  selectedItems!:User[];
+  dropdownList!:any[];
+  selectedItems!:any[];
   dropdownSettings!:IDropdownSettings;
 
   constructor(private groupService:GroupService, private router:Router, private authService:AuthService, private route: ActivatedRoute) {
@@ -56,7 +56,9 @@ export class GroupComponent implements OnInit {
                   this.users.push({id: user.userId, username: fetchedUser.username});
                   if(this.previousUsers.length > i-2) {
                     this.selectedItems = this.previousUsers;
+                    console.log('selectedItems init:',this.selectedItems);
                   }
+                  console.log('previousUsers init:',this.previousUsers);
                 }
               })
             i++
@@ -79,6 +81,9 @@ export class GroupComponent implements OnInit {
   onUpdateGroup() {
     let usersIds:any = [];
     let idsToRemove:any = [];
+    console.log('users array',this.users);
+    console.log('usersIds init',usersIds);
+    console.log('idsToRemove init',idsToRemove);
     if (this.roomsInput.value != null) {
       let roomArray = [];
       roomArray = this.roomsInput.value.split(",");
@@ -89,28 +94,68 @@ export class GroupComponent implements OnInit {
     this.rooms = this.rooms.filter(function(value, index, arr){
       return '' != value.name;
     });
-
+    console.log('start of foreach');
+    console.log('users before populating usersIds',this.users);
+    console.log('======================================');
+    let i = 0;
     this.users.forEach(user => {
+      console.log('loop users ' + i);
+      console.log('user checked: ',user);
+      i++;
+      let j = 0;
       this.previousUsers.forEach((previousUser:any) => {
+        console.log('loop j ' +j)
+        j++;
+        console.log('Previous user checked: ',previousUser);
         if (previousUser.id == user.id) {
           usersIds.push({userId: user.id, role: previousUser.role});
           idsToRemove.push(user.id);
         }
+        console.log('usersIds for these users',usersIds);
+        console.log('idsToRemove for these users',idsToRemove);
+        console.log('======================================');
       });
     });
-
+    console.log('usersIds after populate',usersIds);
+    console.log('idsToRemove after populate',idsToRemove);
+    console.log('======================================');
+    let k = 0;
+    console.log('users before removed ids',this.users);
+    console.log('---');
     idsToRemove.forEach((id:any) => {
+      console.log('loop k ' + k)
+      console.log('id being checked: ',id);
       this.users = this.users.filter(function(value, index, arr){
         return id != value.id;
       });
+      console.log('users after this loop ' + (k),this.users);
+      k++;
     });
+    console.log('---');
+    console.log('users after removed ids',this.users);
+    console.log('======================================');
 
     this.users.forEach(user => {
       usersIds.push({userId: user.id, role: "member"});
     });
+    console.log('final usersIds: ', usersIds)
+    usersIds.push({userId: this.userId, role:"admin"});
 
-    this.groupService.updateGroup(this.groupId,this.group.name,usersIds,this.rooms);
-    this.router.navigate(['/']);
+    let duplicateIdsToCheck:string[] = [];
+    usersIds.forEach((user:any) => {
+      duplicateIdsToCheck.push(user.userId);
+    });
+    console.log('duplicate ids to check: ',duplicateIdsToCheck);
+
+    if (duplicateIdsToCheck.length !== new Set(duplicateIdsToCheck).size) {
+      console.log(true);
+      console.log('there was an issue');
+      this.router.navigate(['/']);
+    } else {
+      console.log('no issue, group updated');
+      this.groupService.updateGroup(this.groupId,this.group.name,usersIds,this.rooms);
+      this.router.navigate(['/']);
+    }
   }
 
   // Change the group's role of a user
@@ -120,6 +165,7 @@ export class GroupComponent implements OnInit {
         if(this.previousUsers[i].id === user.id)
         {
           this.previousUsers[i].role='admin';
+          console.log('added admin right to ' + this.previousUsers[i].username);
         }
       }
     } else {
@@ -127,14 +173,18 @@ export class GroupComponent implements OnInit {
         if(this.previousUsers[i].id === user.id)
         {
           this.previousUsers[i].role='member';
+          console.log('removed admin rights from ' + this.previousUsers[i].username);
         }
       }
     }
+    console.log('users array after this modification',this.users);
   }
 
   // When user is selected
   onItemSelect(item: any) {
     this.users.push(item);
+    console.log(item);
+    console.log(this.users);
   }
 
   // When user is deselected
@@ -142,12 +192,16 @@ export class GroupComponent implements OnInit {
     this.users = this.users.filter(function(value, index, arr){
         return item.id != value.id;
     });
+    console.log('removed from users: ', item.id);
     this.previousUsers.forEach((user:any) => {
       if(item.id == user.id) {
         this.previousUsers = this.previousUsers.filter(function(value, index: any, arr: any){
           return item.id != value.id;
         })
+        console.log('removed from previousUsers: ', item.id,user.id);
       }
     });
+    console.log('previousUsers array after deselect: ',this.previousUsers);
+    console.log('users array after deselect: ', this.users);
   }
 }

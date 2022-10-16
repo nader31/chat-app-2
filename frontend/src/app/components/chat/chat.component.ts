@@ -92,7 +92,9 @@ export class ChatComponent implements OnInit, OnDestroy {
             .subscribe((user:any) => {
               this.groupService.getUserGroupInfoById(this.group.id,user._id)
                 .subscribe((userInfo:any) => {
-                  this.connectedUsers.push({username: username, role: userInfo.role});
+                  if(userInfo.role != null) {
+                    this.connectedUsers.push({username: username, role: userInfo.role});
+                  }
                 })
             })
         });
