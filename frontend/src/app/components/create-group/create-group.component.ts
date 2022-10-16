@@ -30,7 +30,7 @@ export class CreateGroupComponent implements OnInit {
     this.userId = this.authService.getUserId();
     this.authService.getAllUsers()
       .subscribe((users:any) => {
-        let userId = this.userId
+        let userId = this.userId;
         this.dropdownList = users.filter(function(value: { id: any; }, index: any, arr: any){
           return userId != value.id;
       });
@@ -51,6 +51,7 @@ export class CreateGroupComponent implements OnInit {
   // Creates a group
   onCreateGroup() {
     let usersIds:any = [];
+    usersIds.push({userId: this.userId, role: "admin"});
     this.users.forEach(user => {
       usersIds.push({userId: user.id, role: "member"})
     });
